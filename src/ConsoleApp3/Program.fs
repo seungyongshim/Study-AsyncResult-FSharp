@@ -10,7 +10,6 @@ module Domain =
 
     type EmailMessage = { To: EmailAddress; Body: string }
 
-
 module Infrastructure =
     open Domain
 
@@ -36,6 +35,8 @@ module Infrastructure =
 
 type IInstruction<'a> =
     abstract member Map: ('a -> 'b) -> IInstruction<'b>
+
+
 
 type Program<'a> =
     | Instruction of IInstruction<Program<'a>>
@@ -66,3 +67,27 @@ type LoggerInstruction<'a> =
 
 let logInfo str = Instruction(LogInfo(str, Stop))
 let logError str = Instruction(LogError(str, Stop))
+
+open Domain
+
+type DbInstruction<'a> =
+    | QueryProfile of UserId * next:(Profile -> 'a)
+    | UpdateProfile of Profile * next:(unit -> 'a)
+    interface IInstruction<'a> with
+
+
+
+type Decision =
+    | NoAction
+    | UpdateProfileOnly of Profile
+    | UpdateProfileAndNotify of Profile * EmailMessage
+
+let updateCustomerProfile (newProfile: Profile) (currentProfile: Profile) =
+    if currentProfile <> newProfile then program {
+        do! logInfo("Updating Profile")
+    }
+    else program {
+        return NoAction
+    }
+
+
