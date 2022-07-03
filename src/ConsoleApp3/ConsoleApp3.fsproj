@@ -6,10 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="IInstruction.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Program1.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="Logger.fs" />
+    <Compile Include="DbInstruction.fs" />
+    <Compile Include="Root.fs" />
   </ItemGroup>
 
 </Project>
